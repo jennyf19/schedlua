@@ -38,7 +38,7 @@ function Queue.new(name)
 	return Queue:init(1, 0, name);
 end
 --]]
-
+-- two functions in Queue - push in one side, pull out the other
 function Queue:enqueue(value)
 	--self.MyList:PushRight(value)
 	local last = self.last + 1

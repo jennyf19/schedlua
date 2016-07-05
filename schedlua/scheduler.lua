@@ -32,6 +32,7 @@ function Scheduler.init(self, ...)
 	--print("==== Scheduler.init ====")
 	local obj = {
 		TasksReadyToRun = Queue();
+    --TasksReadytoRun is an instance variable. It is an instance of a Queue. Queue is an object. First in, first out--
 	}
 	setmetatable(obj, Scheduler_mt)
 	
@@ -61,9 +62,13 @@ end
 -- metamethod implemented.
 -- The 'params' is a table of parameters which will be passed to the function
 -- when it's ready to run.
+
 function Scheduler.scheduleTask(self, task, params, pri)
-	--print("Scheduler.scheduleTask: ", task, params, pri)
-	--pri is the priority 
+  
+	--[[print("Scheduler.scheduleTask: ", task, params, pri)
+    self is calling things ojbects, can also use Scheduler:schedulerTask means there is an implied    "self" parameter. task object is passed in. 
+    pri is the priority --]]
+    
 	params = params or {}
 	
 	if not task then
@@ -74,6 +79,7 @@ function Scheduler.scheduleTask(self, task, params, pri)
 	self.TasksReadyToRun:enqueue(task);	
 	task.state = "readytorun"
 	task.pri = pri 
+  --[[have a thing ready to run. Add it to enqueue and set state to "readytorun" and set task.pri to pri. Can schedule priority here, like I did, or later--]]
 
 	return task;
 end
@@ -124,7 +130,8 @@ function Scheduler.step(self)
 		print("suspended task wants to run")
 		return true;
 	end
-
+  
+  -- I added in all these print functions as debugging tools to see how/when scheduler.step was running
 	-- If we have gotten this far, then the task truly is ready to 
 	-- run, and it should be set as the currentFiber, and its coroutine
 	-- is resumed.
@@ -145,7 +152,7 @@ function Scheduler.step(self)
 	local success = results[1];
 	table.remove(results,1);
 
---print("PCALL, RESUME: ", pcallsuccess, success)
+--print("PCALL, RESUME: ", pcallsuccess, success). Results are a table
 
 	-- no task is currently executing
 	self.CurrentFiber = nil;
