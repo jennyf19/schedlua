@@ -79,39 +79,43 @@ function Queue:highestPriority(value)
 	end
 	
 	-- Loop through all the tasks to find the highest priority.
-	local highestPriority = 11
+	local highestPriority = 100
 	print("highestPriority: "..highestPriority)
 
-	local highestPriTaskId = nil
+	local highestPriTaskId
 	for taskId = self.first, self.last do
 		print("taskId: "..taskId)
 
-		local task = self[taskId]
-		print("task: ")
-		print(unpack(task))
+		local task = self[taskId]  
 
 		if (task ~= nil) then
 			print("we're not nil")
-			local taskPri = task.params[4]
-			print("taskPri: "..taskPri)
       
-			if (taskPri < highestPriorty) then
-				highestPriority = taskPri
-				print("highestPriority: "..highestPriority)
-				highestPriTaskId = taskId
-				print("highestPriTaskId: "..highestPriTaskId)
-			end
+			local taskPri = task.params[1]
+      if taskPri ~= nil then
+        print("taskPri: "..taskPri)
+        
+        if (taskPri < highestPriority) then
+          --if it's a higher priority, then save the priority to compare with the next tasks
+          highestPriority = taskPri
+          print("highestPriority: "..highestPriority)
+          --Save the taskID so we can return the highest priority task later
+          highestPriTaskId = taskId
+          print("highestPriTaskId: "..highestPriTaskId)
+        end
+      end
 		end
 	end
-	local value = self[highestPriority]
+  --after the loop finishes, use the highest priority task id and return the highest priority task
+	local value = self[highestPriTaskId]
 
 	-- Shift the tasks to fill in the blank where the highest priority used to be.
-	for priority = highestPriority+1, self.last do
+	--[[for priority = highestPriority+1, self.last do
 		self[priority-1] = self[priority]
 	end
 
 	-- Clear the last task since every shifted over one.
-	self[self.last] = nil        -- to allow garbage collection
+	self[self.last] = nil        -- to allow garbage collection]]
 
 	return value	
 end

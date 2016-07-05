@@ -30,16 +30,19 @@ local function task2()
 end
 
 local function main()
-	local t1 = spawn(Scheduler, task1, 2)
-	local t2 = spawn(Scheduler, task2, 7)
+	local t1 = spawn(Scheduler, task1, 50)
+	local t2 = spawn(Scheduler, task2, 99)
 
-	while (true) do
+--[[	while (true) do
 		--print("STATUS: ", t1:getStatus(), t2:getStatus())
 		if t1:getStatus() == "dead" and t2:getStatus() == "dead" then
 			break;
 		end
 		Scheduler:step()
-	end
+	end]]
+  Scheduler:step()
+  
+ 
 end
 
 main()
