@@ -79,7 +79,7 @@ function Scheduler.scheduleTask(self, task, params, pri)
 	self.TasksReadyToRun:enqueue(task);	
 	task.state = "readytorun"
 	task.pri = pri 
-  --[[have a thing ready to run. Add it to enqueue and set state to "readytorun" and set task.pri to pri. Can schedule priority here, like I did, or later--]]
+  --[[have a thing ready to run. Add it to enqueue and set state to "readytorun" and set task.pri to pri. Can schedule priority here, like I did, or later --]]
 
 	return task;
 end
