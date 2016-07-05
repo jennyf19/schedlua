@@ -52,6 +52,12 @@ function Task.setParams(self, params)
 	return self;
 end
 
+function Task.setPri(self, pri)
+  self.pri = pri
+  
+  return self;
+end
+
 function Task.resume(self)
 --print("Task, RESUMING: ", unpack(self.params));
 	return coroutine.resume(self.routine, unpack(self.params));

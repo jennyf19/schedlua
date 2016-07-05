@@ -1,3 +1,4 @@
+package.path = package.path..";../?.lua"
 
 local ffi = require("ffi");
 
@@ -60,8 +61,9 @@ end
 -- metamethod implemented.
 -- The 'params' is a table of parameters which will be passed to the function
 -- when it's ready to run.
-function Scheduler.scheduleTask(self, task, params)
-	--print("Scheduler.scheduleTask: ", task, params)
+function Scheduler.scheduleTask(self, task, params, pri)
+	--print("Scheduler.scheduleTask: ", task, params, pri)
+	--pri is the priority 
 	params = params or {}
 	
 	if not task then
@@ -71,6 +73,7 @@ function Scheduler.scheduleTask(self, task, params)
 	task:setParams(params);
 	self.TasksReadyToRun:enqueue(task);	
 	task.state = "readytorun"
+	task.pri = pri 
 
 	return task;
 end
@@ -96,15 +99,17 @@ end
 
 function Scheduler.step(self)
 	-- Now check the regular fibers
-	local task = self.TasksReadyToRun:dequeue()
+	--local task = self.TasksReadyToRun:dequeue()
+	local task = self.TasksReadyToRun:highestPriority()
 
 	-- If no fiber in ready queue, then just return
 	if task == nil then
-		--print("Scheduler.step: NO TASK")
+		print("Scheduler.step: NO TASK")
 		return true
 	end
 
 	if task:getStatus() == "dead" then
+		print("the task is dead, mofo")
 		self:removeFiber(task)
 
 		return true;
@@ -116,7 +121,7 @@ function Scheduler.step(self)
 	-- We assume that some other part of the system is responsible for
 	-- keeping track of the task, and rescheduling it when appropriate.
 	if task.state == "suspended" then
-		--print("suspended task wants to run")
+		print("suspended task wants to run")
 		return true;
 	end
 
