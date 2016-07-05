@@ -50,7 +50,7 @@ function Kernel.spawn(self, func, ...)
 	self.Scheduler:scheduleTask(task, {...});
 	--[[spawn takes a reference to an object (variatic arguments). {...} everything else. local n = select ("#", ...); tells how many there are. Want to hold parameters inside a table to pass it around. You can also insert a parameter here in the kernel.
     function Kernel.spawn(self, func, priority,...)
-    local task = Task(func, priority, ...) --]]
+    local task = Task(func, priority, ...)--]]
 	return task;
 end
 
